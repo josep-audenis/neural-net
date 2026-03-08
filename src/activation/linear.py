@@ -1,15 +1,14 @@
 import numpy as np
 
-class ReLUActivation:
-    
+class LinearActivation:
+
     def forward(self, inputs):
         self.inputs = inputs
-        self.output = np.maximum(0, inputs)
+        self.output = inputs
 
 
     def backward(self, dvalues):
         self.dinputs = dvalues.copy()
-        self.dinputs[self.inputs <= 0] = 0
 
 
     def predictions(self, outputs):
