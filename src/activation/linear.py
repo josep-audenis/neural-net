@@ -2,7 +2,7 @@ import numpy as np
 
 class LinearActivation:
 
-    def forward(self, inputs):
+    def forward(self, inputs, training):
         self.inputs = inputs
         self.output = inputs
 

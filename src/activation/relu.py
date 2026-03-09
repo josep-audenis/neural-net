@@ -2,7 +2,7 @@ import numpy as np
 
 class ReLUActivation:
     
-    def forward(self, inputs):
+    def forward(self, inputs, training):
         self.inputs = inputs
         self.output = np.maximum(0, inputs)
 
