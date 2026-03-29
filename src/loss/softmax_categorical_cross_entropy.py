@@ -5,17 +5,6 @@ from loss.categorical_cross_entropy import CategoricalCrossEntropyLoss
 
 class SoftmaxCategoricalCrossEntropyAcitvationLoss():
 
-    def __init__(self):
-        self.activation = SoftmaxActivation()
-        self.loss = CategoricalCrossEntropyLoss()
-
-
-    def forward(self, inputs, y_true):
-        self.activation.forward(inputs)
-        self.output = self.activation.output
-        return self.loss.calculate(self.output, y_true)
-    
-    
     def backward(self, dvalues, y_true):
         samples = len(dvalues)
 
