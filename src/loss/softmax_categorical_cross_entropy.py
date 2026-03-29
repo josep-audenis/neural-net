@@ -3,7 +3,7 @@ import numpy as np
 from activation.softmax import SoftmaxActivation
 from loss.categorical_cross_entropy import CategoricalCrossEntropyLoss
 
-class SoftmaxCategoricalCrossEntropyAcitvationLoss():
+class SoftmaxAcitvationCategoricalCrossEntropyLoss():
 
     def backward(self, dvalues, y_true):
         samples = len(dvalues)
