@@ -5,7 +5,7 @@ from loss.loss import Loss
 class BinaryCrossEntropyLoss(Loss):
 
     def forward(self, y_pred, y_true):
-        y_pred_clipped = np.clipped(y_pred, 1e-7, 1 - 1e-7)
+        y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
         sample_losses = -(y_true * np.log(y_pred_clipped) + (1 - y_true) * np.log(1 - y_pred_clipped))
         sample_losses = np.mean(sample_losses, axis=-1)
         return sample_losses
@@ -15,5 +15,5 @@ class BinaryCrossEntropyLoss(Loss):
         samples = len(dvalues)
         outputs = len(dvalues[0])
         clipped_dvalues = np.clip(dvalues, 1e-7, 1 - 1e-7)
-        self.dinupts = -(y_true / clipped_dvalues - (1 - y_true) / (1 - clipped_dvalues)) / outputs
-        self.dinupts = self.dinupts / samples
+        self.dinputs = -(y_true / clipped_dvalues - (1 - y_true) / (1 - clipped_dvalues)) / outputs
+        self.dinputs = self.dinputs / samples

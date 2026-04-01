@@ -17,7 +17,7 @@ class SGDOptimizer:
     
     def _init_cache(self, layer):
         layer.weight_momentums = np.zeros_like(layer.weights)
-        layer.bias_momentum = np.zeros_like(layer.biases)
+        layer.bias_momentums = np.zeros_like(layer.biases)
     
 
     def update_params(self, layer):

@@ -31,7 +31,7 @@ class LayerDense:
         if self.bias_regularizer_l1 > 0:
             dl1 = np.ones_like(self.biases)
             dl1[self.biases < 0] = -1
-            self.biases += self.bias_regularizer_l1 * dl1
+            self.dbiases += self.bias_regularizer_l1 * dl1
         
         if self.bias_regularizer_l2 > 0:
             self.dbiases += 2 * self.bias_regularizer_l2 * self.biases

@@ -3,12 +3,12 @@ import numpy as np
 from activation.softmax import SoftmaxActivation
 from loss.categorical_cross_entropy import CategoricalCrossEntropyLoss
 
-class SoftmaxAcitvationCategoricalCrossEntropyLoss():
+class SoftmaxActivationCategoricalCrossEntropyLoss():
 
     def backward(self, dvalues, y_true):
         samples = len(dvalues)
 
-        if len(y_true.shape == 2):
+        if len(y_true.shape) == 2:
             y_true = np.argmax(y_true, axis=1)
 
         self.dinputs = dvalues.copy()

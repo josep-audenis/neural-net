@@ -6,7 +6,7 @@ from activation.softmax import SoftmaxActivation
 from layer.input import InputLayer
 from loss.loss import Loss
 from loss.categorical_cross_entropy import CategoricalCrossEntropyLoss
-from loss.softmax_categorical_cross_entropy import SoftmaxAcitvationCategoricalCrossEntropyLoss
+from loss.softmax_categorical_cross_entropy import SoftmaxActivationCategoricalCrossEntropyLoss
 
 class Model:
 
@@ -56,7 +56,7 @@ class Model:
                 self.loss.remember_trainable_layers(self.trainable_layers)
 
         if isinstance(self.layers[-1], SoftmaxActivation) and isinstance(self.loss, CategoricalCrossEntropyLoss):
-            self.softmax_classifier_output = SoftmaxAcitvationCategoricalCrossEntropyLoss
+            self.softmax_classifier_output = SoftmaxActivationCategoricalCrossEntropyLoss()
 
 
     def train(self, X, y, *, epochs=1, batch_size=None, print_every=1, validation_data=None):
@@ -99,13 +99,13 @@ class Model:
                 self.optimizer.post_update_params()
 
                 if not step % print_every or step == train_steps - 1:
-                    print(f"Step: {step}\n\tAcc: {accuracy:.2f}\n\tLoss: {loss:.3f} (Data Loss: {data_loss:.3f}, Reegularization Loss{regularization_loss:.3f})\n\tLearning Rate: {self.optimizer.current_learning_rate}\n\n")
+                    print(f"Step: {step}\n\tAcc: {accuracy:.2f}\n\tLoss: {loss:.3f} (Data Loss: {data_loss:.3f}, Regularization Loss{regularization_loss:.3f})\n\tLearning Rate: {self.optimizer.current_learning_rate}\n\n")
 
-            epoch_data_loss, epoch_regularization_loss = self.loss_calculate_accumulated(include_regularization=True)
+            epoch_data_loss, epoch_regularization_loss = self.loss.calculate_accumulated(include_regularization=True)
             epoch_loss = epoch_loss = epoch_data_loss + epoch_regularization_loss
             epoch_accuracy = self.accuracy.calculate_accumulated()
             
-            print(f"Training\n\tAcc: {epoch_accuracy:.2f}\n\tLoss: {epoch_loss:.3f} (Data Loss: {epoch_data_loss:.3f}, Reegularization Loss{epoch_regularization_loss:.3f})\n\tLearning Rate: {self.optimizer.current_learning_rate}\n\n")
+            print(f"Training\n\tAcc: {epoch_accuracy:.2f}\n\tLoss: {epoch_loss:.3f} (Data Loss: {epoch_data_loss:.3f}, Regularization Loss{epoch_regularization_loss:.3f})\n\tLearning Rate: {self.optimizer.current_learning_rate}\n\n")
 
             if validation_data is not None:
                 self.evaluate(*validation_data, batch_size=batch_size)
@@ -115,7 +115,7 @@ class Model:
         validation_steps = 1
         
         if batch_size is not None:
-            validation_steps = len(X_val // batch_size)
+            validation_steps = len(X_val) // batch_size
             if validation_steps * batch_size < len(X_val):
                 validation_steps += 1
 
@@ -184,7 +184,7 @@ class Model:
         
         self.loss.backward(output, y)
         for layer in reversed(self.layers):
-            layer.backward(layer.next.dinupts)
+            layer.backward(layer.next.dinputs)
 
 
     def get_parameters(self):
@@ -220,7 +220,7 @@ class Model:
         model.loss.__dict__.pop("dinputs", None)
 
         for layer in model.layers:
-            for property in ["inputs", "outputs", "dinputs", "dweights", "dbiases"]:
+            for property in ["inputs", "outputs", "dinputs", "dweights", "dbiases"]:    # TODO: Review outputs attribute (output or outputs)
                 layer.__dict__.pop(property, None)
 
         with open(path, "wb") as file:
